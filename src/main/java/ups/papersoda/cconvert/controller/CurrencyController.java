@@ -15,8 +15,8 @@ import java.util.concurrent.TimeoutException;
 @RestController()
 @RequestMapping(path = "currency")
 public class CurrencyController {
-    private CurrencyService currencyService;
-    private CurrencyIntegrationService currencyIntegrationService;
+    private final CurrencyService currencyService;
+    private final CurrencyIntegrationService currencyIntegrationService;
 
     @Autowired
     public CurrencyController(
