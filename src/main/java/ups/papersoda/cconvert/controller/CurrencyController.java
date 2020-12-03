@@ -1,6 +1,7 @@
 package ups.papersoda.cconvert.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,16 +15,26 @@ import java.util.concurrent.TimeoutException;
 @RestController()
 @RequestMapping(path = "currency")
 public class CurrencyController {
+    private CurrencyService currencyService;
+    private CurrencyIntegrationService currencyIntegrationService;
+
+    @Autowired
+    public CurrencyController(
+            CurrencyService currencyService,
+            CurrencyIntegrationService currencyIntegrationService
+    ) {
+        this.currencyService = currencyService;
+        this.currencyIntegrationService = currencyIntegrationService;
+    }
+
     @GetMapping(produces = {"application/json"})
     public GetAllCurrenciesResponse getCurrencies()
             throws InterruptedException, ExecutionException, TimeoutException, JsonProcessingException
     {
-        var cis = new CurrencyIntegrationService();
-        var currencies = cis.getCurrencies(
+        var currencies = currencyIntegrationService.getCurrencies(
                 "https://www.lb.lt/webservices/FxRates/FxRates.asmx/getCurrentFxRates?tp=EU",
                 5
         );
-       var currencyService = new CurrencyService();
        return new GetAllCurrenciesResponse(currencyService.getCurrencyNames(currencies));
     }
 }

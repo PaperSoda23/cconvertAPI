@@ -2,6 +2,7 @@ package ups.papersoda.cconvert.integrations.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.springframework.stereotype.Service;
 import ups.papersoda.cconvert.data.model.Currency;
 import ups.papersoda.cconvert.integrations.http.CurrencyHttpClient;
 import ups.papersoda.cconvert.integrations.mappings.CurrencyMapping;
@@ -13,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
+@Service
 public class CurrencyIntegrationService {
     public List<Currency> getCurrencies(final String uri, final int timeoutSeconds)
             throws InterruptedException, ExecutionException, TimeoutException, JsonProcessingException
