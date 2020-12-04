@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "api.currency.source",
+      "type": "java.lang.String",
+      "description": "Description for api.currency.source."
+    },
+    {
+      "name": "api.currency.timeout",
+      "type": "java.lang.String",
+      "description": "Description for api.currency.timeout."
+    }
+  ]
+}
