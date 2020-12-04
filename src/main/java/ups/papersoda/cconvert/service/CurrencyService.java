@@ -29,11 +29,11 @@ public class CurrencyService {
             throws CurrencyNotFoundException, NullPointerException
     {
         if (currencyName.equals("EUR")) return 1d;
+
         Optional<Currency> fromCurrency = currencies
                 .stream()
                 .filter(c -> c.getName().equals(currencyName))
                 .findFirst();
-
         if (fromCurrency.isEmpty())
             throw new CurrencyNotFoundException(String.format("currency name %s was not found", currencyName));
 
@@ -51,9 +51,9 @@ public class CurrencyService {
         if (NumberHelper.isNegative(amountToConvert))
             throw new IllegalArgumentException("amount should be a positive number");
 
-        double toRate = getCurrencyRate(to, currencies);
-        double fromRate = getCurrencyRate(from, currencies);
-        double conversionResult = (toRate / fromRate) * amountToConvert;
+        final double toRate = getCurrencyRate(to, currencies);
+        final double fromRate = getCurrencyRate(from, currencies);
+        final double conversionResult = (toRate / fromRate) * amountToConvert;
 
         return conversionResult;
     }
