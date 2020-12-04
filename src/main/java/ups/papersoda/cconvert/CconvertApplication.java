@@ -1,6 +1,7 @@
 package ups.papersoda.cconvert;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +22,11 @@ public class CconvertApplication {
         SpringApplication.run(CconvertApplication.class, args);
     }
 
+    @Value("${api.currency.source}")
+    private String api;
+    @Value("${api.currency.timeout}")
+    private int timeout;
+
     @Bean
     ApplicationRunner initialize(CurrencyDAO currencyDAO, CurrencyIntegrationService currencyIntegrationService) {
         return (ApplicationArguments args) -> obtainData(currencyDAO, currencyIntegrationService);
@@ -31,11 +37,9 @@ public class CconvertApplication {
     {
         if (currencyDAO.count() != 0) return;
         var currencies = currencyIntegrationService.getCurrencies(
-                "https://www.lb.lt/webservices/FxRates/FxRates.asmx/getCurrentFxRates?tp=EU",
-                5
+                api,
+                timeout
         );
         currencyDAO.saveAll(currencies);
     }
-
-
 }

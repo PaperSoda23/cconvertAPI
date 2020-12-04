@@ -1,6 +1,7 @@
 package ups.papersoda.cconvert.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import ups.papersoda.cconvert.dao.CurrencyDAO;
 import ups.papersoda.cconvert.integrations.service.CurrencyIntegrationService;
@@ -12,6 +13,11 @@ import java.util.concurrent.TimeoutException;
 public class CurrencyRefresherService {
     private final CurrencyDAO currencyDAO;
     private final CurrencyIntegrationService currencyIntegrationService;
+    @Value("${api.currency.source}")
+    private String api;
+    @Value("${api.currency.timeout}")
+    private int timeout;
+
 
     private CurrencyRefresherService(
             CurrencyDAO currencyDAO,
@@ -31,8 +37,8 @@ public class CurrencyRefresherService {
         currencyDAO.deleteAllInBatch();
         if (currencyDAO.count() != 0) throw new SQLException("table is not empty before currency rate update");
         final var newCurrencies = currencyIntegrationService.getCurrencies(
-                "https://www.lb.lt/webservices/FxRates/FxRates.asmx/getCurrentFxRates?tp=EU",
-                5
+                api,
+                timeout
         );
         currencyDAO.saveAll(newCurrencies);
     }

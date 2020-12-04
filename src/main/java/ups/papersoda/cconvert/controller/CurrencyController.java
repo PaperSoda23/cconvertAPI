@@ -1,6 +1,7 @@
 package ups.papersoda.cconvert.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ups.papersoda.cconvert.dao.CurrencyDAO;
