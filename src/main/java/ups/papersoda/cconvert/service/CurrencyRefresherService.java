@@ -11,12 +11,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 public class CurrencyRefresherService {
-    private final CurrencyDAO currencyDAO;
-    private final CurrencyIntegrationService currencyIntegrationService;
     @Value("${api.currency.source}")
     private String api;
     @Value("${api.currency.timeout}")
     private int timeout;
+    private final CurrencyDAO currencyDAO;
+    private final CurrencyIntegrationService currencyIntegrationService;
+
 
 
     private CurrencyRefresherService(
@@ -41,5 +42,6 @@ public class CurrencyRefresherService {
                 timeout
         );
         currencyDAO.saveAll(newCurrencies);
+        currencyDAO.flush();
     }
 }
